@@ -224,7 +224,9 @@ textarea.materialize-textarea:focus:not([readonly]) {
   color: #999;
 }
 
-
+.imgHeader{
+	max-height: 43px;
+}
 /* ------------------------------
   Button
 ---------------------------------*/
@@ -1558,9 +1560,9 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 /*loader custom color*/
 #fakeLoader {
-	background: #ad5389; 
-    background: -webkit-linear-gradient(to top, #ad5389, #3c1053);
-    background: linear-gradient(to top, #ad5389, #3c1053); 
+	background: #5e8f9d; 
+    background: -webkit-linear-gradient(to top, #91969c, #5e8f9d);
+    background: linear-gradient(to top,  #91969c, #5e8f9d); 
 	z-index: 1020;
 }
 

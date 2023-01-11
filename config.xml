@@ -1,10 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="io.cordova.hellocordova" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:android="http://schemas.android.com/apk/res/android" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>HelloCordova</name>
-    <description>Sample Apache Cordova App</description>
-    <author email="dev@cordova.apache.org" href="https://cordova.apache.org">
-        Apache Cordova Team
+    <name>Gauto Ingenieria</name>
+    <description>App para carga de obras - Gauto Ingenieria</description>
+    <author email="mebel@chaco.gob.ar" href="#">
+        Martin Ebel
     </author>
+    <icon src="res//icon/android/icono.png" />
     <content src="main.html" />
     <access origin="*" />
     <allow-navigation href="*" />
