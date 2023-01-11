@@ -1,4 +1,3 @@
-var urlAPI='http://10.3.150.228/api_gauto/v1/';
 var db;
 var msg;
 var networkState ;
