@@ -4,6 +4,10 @@ var networkState ;
 var lat=0;
 var lon=0;
 var ultimoTrabajo=0;
+var cantTemp=0;
+var contadorSubidos=0;
+var fechaHoy = new Date();
+var fechaFormateada=getFormattedDate(fechaHoy);
 document.addEventListener('deviceready', function() {
     //getGPS();
     networkState= navigator.connection.type;
@@ -11,7 +15,11 @@ document.addEventListener('deviceready', function() {
     db.executeSql('SELECT max(id) AS mycount FROM trabajos', [], function(rs) {
         ultimoTrabajo = rs.rows.item(0).mycount;
         if(ultimoTrabajo==""){ultimoTrabajo=0;}
-        actualizarDatos();
+        db.executeSql('SELECT count(id) AS mycount FROM trabajostemp', [], function(tt) {
+          cantTemp = tt.rows.item(0).mycount;
+          actualizarDatos();
+        }, function(error) {
+        });
       }, function(error) {
        createDatabase();
       });
@@ -27,6 +35,9 @@ document.addEventListener('deviceready', function() {
         'CREATE TABLE IF NOT EXISTS estados (idestado INTEGER PRIMARY KEY,nombreestado TEXT)',
         'CREATE TABLE IF NOT EXISTS tipos (idtipo INTEGER PRIMARY KEY,nombretipo TEXT)',
         'CREATE TABLE IF NOT EXISTS config (ultimaactualizacion TEXT)',
+        ['INSERT INTO config (ultimaactualizacion) VALUES (?1)',['0']],
+        ["INSERT OR IGNORE INTO trabajostemp (id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,imagen) VALUES (?,?,?,?,?,?,?,?,?)",['98','2023-01-12','45','45','8','2','juan perez','432123','']],
+        ["INSERT OR IGNORE INTO trabajostemp (id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,imagen) VALUES (?,?,?,?,?,?,?,?,?)",['99','2023-01-12','45','45','8','2','juan perez','432123','']],
       ], function() {
         actualizarDatos();
       }, function(error) {
@@ -91,36 +102,20 @@ document.addEventListener('deviceready', function() {
                     msg="Ocurrió un error de base de datos: "+ error
                     window.location.href="error.html?msg="+msg;
                 }, function() {
-                       //subir los datos pendientes
-                       db.executeSql('SELECT id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,imagen FROM trabajostemp', [], function(rs) {
-                        for(var x = 0; x < rs.rows.length; x++) {
-                          var idtemp= rs.rows.item(x).id;
-                          const optionsPost = {
-                            method: 'post',
-                            data: { 
-                              id: rs.rows.item(x).id, 
-                              fechacreacion: rs.rows.item(x).fechacreacion ,
-                              latitud: rs.rows.item(x).latitud,
-                              longitud: rs.rows.item(x).longitud,
-                              tipo: rs.rows.item(x).tipo,
-                              cliente: rs.rows.item(x).cliente,
-                              telefono: rs.rows.item(x).telefono
-                            },
-                            headers: { }
-                          };
-                          
-                          cordova.plugin.http.sendRequest(urlAPI+'uploadData', optionsPost, function(response) {
-                            db.executeSql('DELETE FROM trabajostemp where id=?', [idtemp]);
-							
-                          }, function(response) {
-                            
-                            console.log(response.status);
-                          });
-                        }
-                      }, function(error) {
-                        window.location.href="index.html";
-                      });
-                      window.location.href="index.html";
+                  if(cantTemp>0)
+                       {
+                        subirPendientes();
+                      }
+                      else
+                      {
+                        db.executeSql('UPDATE config SET ultimaactualizacion=?',[fechaFormateada],
+                        function(response)
+                        {
+                          window.location.href="index.html";
+                        },
+                        function(response){});
+                        
+                      }
                 });
           }, function(response) {
             //error
@@ -136,6 +131,78 @@ document.addEventListener('deviceready', function() {
     /*msg="No se puede conectar con el servidor. Por favor verifique su conexión de datos/WiFi y vuelva a abrir la aplicación.";
     window.location.href="error.html?msg="+msg;*/
   }
+
+  function subirPendientes()
+  {
+    var JSONfinal ={trabajos:[]};
+    //subir los datos pendientes
+    db.executeSql('SELECT id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,imagen FROM trabajostemp', [], function(rs) {
+      for(var x = 0; x < rs.rows.length; x++) {
+        
+        var dataJSON={
+          id: rs.rows.item(x).id, 
+          fechacreacion: rs.rows.item(x).fechacreacion ,
+          latitud: rs.rows.item(x).latitud,
+          longitud: rs.rows.item(x).longitud,
+          tipo: rs.rows.item(x).tipo,
+          cliente: rs.rows.item(x).cliente,
+          telefono: rs.rows.item(x).telefono,
+          localidad:rs.rows.item(x).localidad
+        };
+        JSONfinal.trabajos.push(dataJSON);
+      }
+       subirDatos(JSONfinal);
+      
+    }, function(error) {
+      window.location.href="index.html";
+    });
+  }
+
+
+  function subirDatos(datos)
+  {
+
+    cordova.plugin.http.setDataSerializer('utf8');
+        const serializedData = JSON.stringify(datos);
+        const headers = { 'Content-Type': 'application/json' };
+
+        cordova.plugin.http.post(urlAPI+'uploadData', serializedData, headers, function(response) {
+          $.each(datos.trabajos, function(key,value) {
+             //insertar trabajo
+    db.executeSql("INSERT OR IGNORE INTO trabajos(id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,imagen) VALUES (?,?,?,?,?,?,?,?,?,?)",[value.id,value.fechacreacion,value.latitud,value.longitud,value.localidad,value.tipo,value.cliente,value.telefono,'1',''], function(tt) {
+      //updateo fecha actualizacion
+      db.executeSql('UPDATE config SET ultimaactualizacion=?',[fechaFormateada], function(tt) {
+          //eliminar temp
+          db.executeSql('DELETE FROM trabajostemp where id=?', [value.id], function(tt) {
+          contadorSubidos++;
+          if(contadorSubidos==cantTemp)
+          {
+            window.location.href="index.html";
+          }
+          }, function(error) {
+            //error en delete
+            msg="Ocurrió un error de base de datos: "+ error
+            window.location.href="error.html?msg="+msg;
+          });
+      }, function(error) {
+        //error en update
+        msg="Ocurrió un error de base de datos: "+ error
+        window.location.href="error.html?msg="+msg;
+      });
+    }, function(error) {
+      //error en insert
+      msg="Ocurrió un error de base de datos: "+ error
+      window.location.href="error.html?msg="+msg;
+    });
+          });
+
+    
+        }, function(response) {
+          //error en server
+          window.location.href="index.html";
+        });
+  }
+
 
   function getGPS()
   {
@@ -181,4 +248,16 @@ document.addEventListener('deviceready', function() {
         "bufferSize":10,
         "signalStrength":false
     });
+  }
+
+  function getFormattedDate(date) {
+    var year = date.getFullYear();
+  
+    var month = (1 + date.getMonth()).toString();
+    month = month.length > 1 ? month : '0' + month;
+  
+    var day = date.getDate().toString();
+    day = day.length > 1 ? day : '0' + day;
+    
+    return year + '/' + month + '/' + day;
   }

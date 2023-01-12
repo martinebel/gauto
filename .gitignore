@@ -25,4 +25,5 @@ node_modules/
 /plugins/
 /platforms/
 /www/js/actions/url_server.js
+./copiar.bat
 copiar.bat
