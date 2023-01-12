@@ -2,7 +2,7 @@
 
 require_once('datos/ConexionBD.php');
 
-class uploadData
+class uploadImages
 {
 
   const ESTADO_CREACION_EXITOSA = 1;
@@ -29,18 +29,12 @@ class uploadData
     $cuerpo = file_get_contents('php://input');
     $usuario = json_decode($cuerpo);
 
-foreach($usuario->trabajos as $item) {
-  $comando = "INSERT INTO `trabajos`(`id`, `fechacreacion`, `latitud`, `longitud`, `localidad`, `tipo`, `cliente`, `telefono`, `estado`) 
-  VALUES (?,?,?,?,?,?,?,?,'1')";
+foreach($usuario->imagenes as $item) {
+  $comando = "INSERT INTO `imagenes`(`idtrabajo`, `idimagen`, `imagen`) VALUES (?,?,?)";
               $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
-              $sentencia->bindParam(1, $item->id, PDO::PARAM_STR);
-              $sentencia->bindParam(2, $item->fechacreacion, PDO::PARAM_STR);
-              $sentencia->bindParam(3, $item->latitud, PDO::PARAM_STR);
-              $sentencia->bindParam(4, $item->longitud, PDO::PARAM_STR);
-              $sentencia->bindParam(5, $item->localidad, PDO::PARAM_INT);
-              $sentencia->bindParam(6, $item->tipo, PDO::PARAM_INT);
-              $sentencia->bindParam(7, $item->cliente, PDO::PARAM_STR);
-              $sentencia->bindParam(8, $item->telefono, PDO::PARAM_STR);
+              $sentencia->bindParam(1, $item->idtrabajo, PDO::PARAM_STR);
+              $sentencia->bindParam(2, $item->idimagen, PDO::PARAM_STR);
+              $sentencia->bindParam(3, $item->imagen, PDO::PARAM_STR);
               $sentencia->execute();
 }
 

@@ -270,6 +270,7 @@ textarea.materialize-textarea:focus:not([readonly]) {
 	box-shadow: 2px 2px 3px #999;
 	text-decoration: none;
 	font-size: 30px;
+	z-index: 90;
 }
 
 .my-float{
@@ -362,9 +363,9 @@ textarea.materialize-textarea:focus:not([readonly]) {
 
 .side-nav-panel {
 	text-align: left;
-	background: #ad5389; 
-    background: -webkit-linear-gradient(to top, #ad5389, #3c1053);
-    background: linear-gradient(to top, #ad5389, #3c1053); 
+	background: #5e8f9d; 
+    background: -webkit-linear-gradient(to top, #91969c, #5e8f9d);
+    background: linear-gradient(to top, #91969c, #5e8f9d); 
 }
 
 .side-nav-panel .profil {

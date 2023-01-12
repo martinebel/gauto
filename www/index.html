@@ -6,18 +6,15 @@
 	<title>Gauto Ingenieria</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1  maximum-scale=1">
 	<meta name="mobile-web-app-capable" content="yes">
-	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src 'self' data:">
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * 'self' 'unsafe-inline' data: file:">
 
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
 	<link rel="stylesheet" href="css/materialize.css">
+	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="fonts/css/all.min.css">
 	<link rel="stylesheet" href="css/normalize.css">
-	<link rel="stylesheet" href="css/owl.carousel.css">
-	<link rel="stylesheet" href="css/owl.theme.css">
-	<link rel="stylesheet" href="css/owl.transitions.css">
 	<link rel="stylesheet" href="css/fakeLoader.css">
 	<link rel="stylesheet" href="css/animate.css">
-	<link rel="stylesheet" href="css/magnific-popup.css">
 	<link rel="stylesheet" href="css/style.css">
 	
 
@@ -27,7 +24,7 @@
 	<!-- loader -->
 	<div id="fakeLoader"></div>
 	<!-- end loader -->
-    <a href="#" class="btnfloat">
+    <a href="addObra.html" class="btnfloat">
         <i class="fa fa-plus my-float"></i>
         </a>
 	<!-- navbar top -->
@@ -53,17 +50,14 @@
 				<img src="img/profile.jpg" alt="">
 				<h2>John Doe</h2>
 			</li>-->
-			<li><a href="setting.html"><i class="fa fa-cog"></i>Settings</a></li>
-			<li><a href="about-us.html"><i class="fa fa-user"></i>About Us</a></li>
-			<li><a href="contact.html"><i class="fa fa-envelope-o"></i>Contact Us</a></li>
-			<li><a href="login.html"><i class="fa fa-sign-in"></i>Login</a></li>
-			<li><a href="register.html"><i class="fa fa-user-plus"></i>Register</a></li>
+			<li><a href="main.html"><i class="fa fa-refresh"></i>Actualizar Datos</a></li>
+			<li><a href="addObra.html"><i class="fa fa-plus"></i>Nueva Obra</a></li>
 		</ul>
 	</div>
 	<!-- end side nav right-->   
 
 	<!-- features -->
-	<div class="section features bg-second">
+	<div class="section features">
 		<div class="container">
 			<div class="alert alert-warning alert-dismissible fade show" id="bannerWarnig" role="alert" style="display: none;">
   				<span id="bannerWarnigMensaje"></span>
@@ -80,11 +74,8 @@
     <script src="cordova.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/materialize.min.js"></script>
-	<script src="js/owl.carousel.min.js"></script>
 	<script src="js/fakeLoader.min.js"></script>
 	<script src="js/animatedModal.min.js"></script>
-	<script src="js/jquery.filterizr.min.js"></script>
-	<script src="js/jquery.magnific-popup.min.js"></script>
 	<script src="js/main.js"></script>
     <script src="js/actions/index.js"></script>
 

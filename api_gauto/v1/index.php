@@ -2,6 +2,7 @@
 date_default_timezone_set('America/Araguaina');
 require 'controladores/getAllData.php'; //para que la app copie datos desde el servidor
 require 'controladores/uploadData.php'; //para que la app suba los datos al servidor
+require 'controladores/uploadImages.php'; //para que la app suba las fotos al servidor
 require 'vistas/VistaXML.php';
 require 'vistas/VistaJson.php';
 require 'utilidades/ExcepcionApi.php';
@@ -52,7 +53,7 @@ else
 
 // Obtener recurso
 $recurso = array_shift($peticion);
-$recursos_existentes = array('getAllData','uploadData');
+$recursos_existentes = array('getAllData','uploadData','uploadImages');
 
 // Comprobar si existe el recurso
 if (!in_array($recurso, $recursos_existentes)) {

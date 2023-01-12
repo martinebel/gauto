@@ -15,7 +15,7 @@ document.addEventListener('deviceready', function() {
     db.executeSql('SELECT max(id) AS mycount FROM trabajos', [], function(rs) {
         ultimoTrabajo = rs.rows.item(0).mycount;
         if(ultimoTrabajo==""){ultimoTrabajo=0;}
-        db.executeSql('SELECT count(id) AS mycount FROM trabajostemp', [], function(tt) {
+        db.executeSql('SELECT count(id) AS mycount FROM trabajos where subido=0', [], function(tt) {
           cantTemp = tt.rows.item(0).mycount;
           actualizarDatos();
         }, function(error) {
@@ -28,16 +28,14 @@ document.addEventListener('deviceready', function() {
   function createDatabase()
   {
     db.sqlBatch([
-        'CREATE TABLE IF NOT EXISTS trabajos (id TEXT PRIMARY KEY, fechacreacion TEXT,latitud REAL,longitud REAL,localidad INTEGER,tipo INTEGER,cliente TEXT,telefono TEXT,estado INTEGER,imagen TEXT)',
-        'CREATE TABLE IF NOT EXISTS trabajostemp (id TEXT PRIMARY KEY, fechacreacion TEXT,latitud REAL,longitud REAL,localidad INTEGER,tipo INTEGER,cliente TEXT,telefono TEXT,imagen TEXT)',
+        'CREATE TABLE IF NOT EXISTS trabajos (id TEXT PRIMARY KEY, fechacreacion TEXT,latitud REAL,longitud REAL,localidad INTEGER,tipo INTEGER,cliente TEXT,telefono TEXT,estado INTEGER,subido INTEGER)',
+        'CREATE TABLE IF NOT EXISTS imagenes (idimagen TEXT PRIMARY KEY,idtrabajo TEXT,imagen TEXT)',
         'CREATE TABLE IF NOT EXISTS provincias (idprovincia INTEGER PRIMARY KEY,nombreprovincia TEXT)',
         'CREATE TABLE IF NOT EXISTS localidades (idlocalidad INTEGER PRIMARY KEY,idprovincia INTEGER,nombrelocalidad TEXT)',
         'CREATE TABLE IF NOT EXISTS estados (idestado INTEGER PRIMARY KEY,nombreestado TEXT)',
         'CREATE TABLE IF NOT EXISTS tipos (idtipo INTEGER PRIMARY KEY,nombretipo TEXT)',
         'CREATE TABLE IF NOT EXISTS config (ultimaactualizacion TEXT)',
-        ['INSERT INTO config (ultimaactualizacion) VALUES (?1)',['0']],
-        ["INSERT OR IGNORE INTO trabajostemp (id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,imagen) VALUES (?,?,?,?,?,?,?,?,?)",['98','2023-01-12','45','45','8','2','juan perez','432123','']],
-        ["INSERT OR IGNORE INTO trabajostemp (id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,imagen) VALUES (?,?,?,?,?,?,?,?,?)",['99','2023-01-12','45','45','8','2','juan perez','432123','']],
+        ['INSERT INTO config (ultimaactualizacion) VALUES (?1)',['0']]        
       ], function() {
         actualizarDatos();
       }, function(error) {
@@ -95,8 +93,14 @@ document.addEventListener('deviceready', function() {
                 var cliente=res[0].trabajos[i].cliente;
                 var telefono=res[0].trabajos[i].telefono;
                 var estado=res[0].trabajos[i].estado;
-                var imagen=res[0].trabajos[i].imagen;
-                tx.executeSql("INSERT OR IGNORE INTO trabajos(id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,imagen) VALUES (?,?,?,?,?,?,?,?,?,?)",[idtrabajo,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,imagen]);
+                tx.executeSql("INSERT OR IGNORE INTO trabajos(id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,subido) VALUES (?,?,?,?,?,?,?,?,?,?)",[idtrabajo,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,'1']);
+                }
+                //imagenes
+               for(i=0; i<res[0].imagenes.length; i++){
+                var idimagen=res[0].imagenes[i].idimagen;
+                var idtrabajo=res[0].imagenes[i].idtrabajo;
+                var imagen=res[0].imagenes[i].imagen;
+                tx.executeSql("INSERT OR IGNORE INTO imagenes(idimagen,idtrabajo,imagen) VALUES (?,?,?)",[idimagen,idtrabajo,imagen]);
                 }
                 }, function(error) {
                     msg="Ocurrió un error de base de datos: "+ error
@@ -104,7 +108,7 @@ document.addEventListener('deviceready', function() {
                 }, function() {
                   if(cantTemp>0)
                        {
-                        subirPendientes();
+                        prepararImagenes();
                       }
                       else
                       {
@@ -132,11 +136,11 @@ document.addEventListener('deviceready', function() {
     window.location.href="error.html?msg="+msg;*/
   }
 
-  function subirPendientes()
+  function prepararPendientes()
   {
     var JSONfinal ={trabajos:[]};
     //subir los datos pendientes
-    db.executeSql('SELECT id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,imagen FROM trabajostemp', [], function(rs) {
+    db.executeSql('SELECT id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono FROM trabajos where subido=0', [], function(rs) {
       for(var x = 0; x < rs.rows.length; x++) {
         
         var dataJSON={
@@ -168,29 +172,20 @@ document.addEventListener('deviceready', function() {
 
         cordova.plugin.http.post(urlAPI+'uploadData', serializedData, headers, function(response) {
           $.each(datos.trabajos, function(key,value) {
-             //insertar trabajo
-    db.executeSql("INSERT OR IGNORE INTO trabajos(id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,imagen) VALUES (?,?,?,?,?,?,?,?,?,?)",[value.id,value.fechacreacion,value.latitud,value.longitud,value.localidad,value.tipo,value.cliente,value.telefono,'1',''], function(tt) {
+             //actualizar trabajo
+    db.executeSql("UPDATE trabajos set subido=1 where id=?",[value.id], function(tt) {
       //updateo fecha actualizacion
       db.executeSql('UPDATE config SET ultimaactualizacion=?',[fechaFormateada], function(tt) {
-          //eliminar temp
-          db.executeSql('DELETE FROM trabajostemp where id=?', [value.id], function(tt) {
-          contadorSubidos++;
-          if(contadorSubidos==cantTemp)
-          {
-            window.location.href="index.html";
-          }
-          }, function(error) {
-            //error en delete
-            msg="Ocurrió un error de base de datos: "+ error
-            window.location.href="error.html?msg="+msg;
-          });
+        contadorSubidos++;
+        if(contadorSubidos==cantTemp)
+        {
+          window.location.href="index.html";
+        }
       }, function(error) {
-        //error en update
         msg="Ocurrió un error de base de datos: "+ error
         window.location.href="error.html?msg="+msg;
       });
     }, function(error) {
-      //error en insert
       msg="Ocurrió un error de base de datos: "+ error
       window.location.href="error.html?msg="+msg;
     });
@@ -199,6 +194,43 @@ document.addEventListener('deviceready', function() {
     
         }, function(response) {
           //error en server
+          window.location.href="index.html";
+        });
+  }
+
+  function prepararImagenes()
+  {
+    var JSONfinal ={imagenes:[]};
+    //subir los datos pendientes
+    db.executeSql('SELECT imagenes.idimagen,imagenes.idtrabajo,imagenes.imagen from trabajos inner join imagenes on imagenes.idtrabajo=trabajos.id where subido=0', [], function(rs) {
+      for(var x = 0; x < rs.rows.length; x++) {
+        
+        var dataJSON={
+          idimagen: rs.rows.item(x).idimagen, 
+          idtrabajo: rs.rows.item(x).idtrabajo, 
+          imagen: rs.rows.item(x).imagen
+        };
+        JSONfinal.imagenes.push(dataJSON);
+      }
+       subirImagenes(JSONfinal);
+      
+    }, function(error) {
+      alert(error);
+      window.location.href="index.html";
+    });
+  }
+
+  function subirImagenes(datos)
+  {
+
+    cordova.plugin.http.setDataSerializer('utf8');
+        const serializedData = JSON.stringify(datos);
+        const headers = { 'Content-Type': 'application/json' };
+
+        cordova.plugin.http.post(urlAPI+'uploadImages', serializedData, headers, function(response) {
+          prepararPendientes();
+        }, function(response) {
+          alert(JSON.stringify(response));
           window.location.href="index.html";
         });
   }

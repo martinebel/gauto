@@ -25,6 +25,7 @@ class getAllData
     $provincias=array();
     $localidades=array();
     $trabajos=array();
+    $imagenes=array();
     $final=array();
     
     $comando = "SELECT * from estados";
@@ -53,12 +54,19 @@ class getAllData
     $sentencia->execute();
     $trabajos=$sentencia->fetchAll(PDO::FETCH_ASSOC);
 
+    $comando = "SELECT * from imagenes where idtrabajo>?";
+    $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
+    $sentencia->bindParam(1, $clientID, PDO::PARAM_INT);
+    $sentencia->execute();
+    $imagenes=$sentencia->fetchAll(PDO::FETCH_ASSOC);
+
     array_push($final,array(
       "estados"=>$estados,
       "tipos"=>$tipos,
       "provincias"=>$provincias,
       "localidades"=>$localidades,
-      "trabajos"=>$trabajos
+      "trabajos"=>$trabajos,
+      "imagenes"=>$imagenes
     ));
     http_response_code(200);
     return ($final);

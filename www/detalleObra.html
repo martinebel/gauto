@@ -1,0 +1,108 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+	<meta charset="UTF-8">
+	<title>Gauto Ingenieria</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1  maximum-scale=1">
+	<meta name="mobile-web-app-capable" content="yes">
+	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * 'self' data: file:">
+
+	<link rel="stylesheet" href="css/bootstrap.min.css">
+	<link rel="stylesheet" href="css/materialize.css">
+	<link rel="stylesheet" href="fonts/css/all.min.css">
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.css">
+	<link rel="stylesheet" href="css/normalize.css">
+	<link rel="stylesheet" href="css/fakeLoader.css">
+	<link rel="stylesheet" href="css/animate.css">
+	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/leaflet.css">
+<style>
+	#modalPreview{
+		height: 100vh;
+		width: 100%;
+		background-color: rgba(0,0,0,0.9);
+		z-index: 1001;
+		position: absolute;
+		left: 0;
+		top: 0;
+		display: none;
+	}
+	#imgPreview{
+		width: 100%;
+	}
+</style>
+</head>
+<body>
+
+	<!-- loader -->
+	<div id="fakeLoader"></div>
+	<!-- end loader -->
+    <a href="addObra.html" class="btnfloat">
+        <i class="fa fa-plus my-float"></i>
+        </a>
+	<!-- navbar top -->
+	<div class="navbar-top sticky-top">
+        <div class="side-nav-panel-left">
+			<a href="index.html"><i class="fa fa-arrow-left"></i></a>
+		</div>
+		<!-- site brand	 -->
+		<div class="site-brand">
+			<img class="imgHeader" src="img/logo.png" />
+		</div>
+		<!-- end site brand	 -->
+		<div class="side-nav-panel-right">
+			
+		</div>
+	</div>
+	<!-- end navbar top -->
+
+	<!-- end side nav right-->   
+
+	<div class="pages section">
+		<div class="container">
+			<div class="shop-single">
+                <div class="card mb-2">
+					<div id="map" style="height:250px"></div>
+				</div>
+				<div class="card mb-2">
+					<div class="card-body">
+						<h5 id="tipo"></h5>
+						<div class="price" id="detalle">77
+
+
+							I've came up with a "responsive" solution for fullscreen modals:
+							
+							Fullscreen Modals that can be enabled only on certain breakpoints. In this way the modal will display "normal" on wider (desktop) screens and fullscreen on smaller (tablet or mobile) screens, giving it the feeling of a native app.
+							
+							Implemented for Bootstrap 3 and Bootstrap 4. Included by default in Bootstrap 5.</div>
+					</div>
+				</div>
+			</div>
+			<div class="card mb-2">
+				<div class="owl-carousel owl-theme" id="listafotos"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div id="modalPreview">
+		<img id="modalImg" class="img-fluid rounded-start" src="" />
+	  </div>
+
+	<!-- scripts -->
+    <script src="cordova.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/materialize.min.js"></script>
+	<script src="js/fakeLoader.min.js"></script>
+	<script src="js/animatedModal.min.js"></script>
+	<script src="js/owl.carousel.min.js"></script>
+	<script src="js/main.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/actions/detalleObra.js"></script>
+
+
+
+</body>
+</html>
