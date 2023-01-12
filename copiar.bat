@@ -1,1 +1,0 @@
-C:\Users\mebel\AppData\Local\Android\Sdk\platform-tools\adb.exe install C:\cordova\gauto\platforms\android\app\build\outputs\apk\debug\app-debug.apk

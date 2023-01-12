@@ -28,8 +28,17 @@ class uploadData
 
     $cuerpo = file_get_contents('php://input');
     $usuario = json_decode($cuerpo);
+
+    $myfile = fopen("logs.txt", "a") or die("Unable to open file!");
+
+
+foreach($usuario->trabajos as $item) { //foreach element in $arr
+  $txt = $item->id;
+  fwrite($myfile, "\n". $txt);
+}
+fclose($myfile);
 http_response_code(200);
-$respuesta["IdAutorizacion"] = 1;
+$respuesta["IdAutorizacion"] = "ok";
         return ["autorizaciones" => $respuesta];
     /*$resultado = self::crear($usuario);
 
