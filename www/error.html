@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Gauto Ingenieria</title>
@@ -13,39 +13,33 @@
 	<link rel="stylesheet" href="css/materialize.css">
 	<link rel="stylesheet" href="fonts/css/all.min.css">
 	<link rel="stylesheet" href="css/style.css">
-	
+
 </head>
+
 <body class="all-loaded">
-
-	<!-- navbar top -->
 	<div class="navbar-top sticky-top"></div>
-	<!-- end navbar top -->
-
-    <div class="pages section">
+	<div class="pages section">
 		<div class="container">
 			<div class="error404">
-				<img src="img/error.png" style="width: 200px;"/>
+				<img src="img/error.png" style="width: 200px;" />
 				<h5 id="msg"></h5>
-				
 			</div>
 		</div>
 	</div>
-    <script src="js/jquery.min.js"></script>
-<script>
-function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-    results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
-}
-$("#msg").html(getParameterByName("msg"));
-</script>
-	
 
-
-
+	<script src="js/jquery.min.js"></script>
+	<script>
+		function getParameterByName(name, url) {
+			if (!url) url = window.location.href;
+			name = name.replace(/[\[\]]/g, "\\$&");
+			var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+				results = regex.exec(url);
+			if (!results) return null;
+			if (!results[2]) return '';
+			return decodeURIComponent(results[2].replace(/\+/g, " "));
+		}
+		$("#msg").html(getParameterByName("msg"));
+	</script>
 </body>
+
 </html>

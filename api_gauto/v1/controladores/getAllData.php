@@ -17,62 +17,59 @@ class getAllData
     return self::obtenerTodo($peticion[0]);
   }
 
-
   private function obtenerTodo($clientID)
   {
-    $estados=array();
-    $tipos=array();
-    $provincias=array();
-    $localidades=array();
-    $trabajos=array();
-    $imagenes=array();
-    $final=array();
-    
+    $estados = array();
+    $tipos = array();
+    $provincias = array();
+    $localidades = array();
+    $trabajos = array();
+    $imagenes = array();
+    $final = array();
+
     $comando = "SELECT * from estados";
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->execute();
-    $estados=$sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $estados = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     $comando = "SELECT * from localidades";
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->execute();
-    $localidades=$sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $localidades = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     $comando = "SELECT * from provincias";
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->execute();
-    $provincias=$sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $provincias = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     $comando = "SELECT * from tipos";
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->execute();
-    $tipos=$sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $tipos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     $comando = "SELECT * from trabajos where id>?";
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->bindParam(1, $clientID, PDO::PARAM_INT);
     $sentencia->execute();
-    $trabajos=$sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $trabajos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
     $comando = "SELECT * from imagenes where idtrabajo>?";
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->bindParam(1, $clientID, PDO::PARAM_INT);
     $sentencia->execute();
-    $imagenes=$sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $imagenes = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
-    array_push($final,array(
-      "estados"=>$estados,
-      "tipos"=>$tipos,
-      "provincias"=>$provincias,
-      "localidades"=>$localidades,
-      "trabajos"=>$trabajos,
-      "imagenes"=>$imagenes
-    ));
+    array_push($final, array(
+      "estados" => $estados,
+      "tipos" => $tipos,
+      "provincias" => $provincias,
+      "localidades" => $localidades,
+      "trabajos" => $trabajos,
+      "imagenes" => $imagenes
+    )
+    );
     http_response_code(200);
     return ($final);
   }
-
-
-
 
 }

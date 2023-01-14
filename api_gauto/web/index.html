@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Gauto Ingenieria</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1  maximum-scale=1">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="fonts/css/all.min.css">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/owl.carousel.min.css">
+	<link rel="stylesheet" href="css/owl.theme.default.css">
+    <style>
+		#modalPreview {
+			height: 100%;
+			width: 100%;
+			background-color: rgba(0, 0, 0, 0.9);
+			z-index: 1001;
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: none;
+		}
+
+		#modalImg {
+			height: 100%;
+		}
+	</style>
+</head>
+
+<body>
+    <nav class="navbar" style="    padding: 0.75rem 0;
+    background-color: transparent;
+    background-image: linear-gradient(to bottom, rgba(var(--bd-violet-rgb), 1), rgba(var(--bd-violet-rgb), 0.95));
+    box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%), inset 0 -1px 0 rgb(0 0 0 / 15%);;margin-bottom: 10px;">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">
+                <img src="img/icono.png" style="height:28px" class="d-inline-block align-text-top">
+                Gauto Ingenieria
+            </a>
+            <div id="contadores" class="float-end"></div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-8">
+                <div id="map" style="height: 88vh;"></div>
+            </div>
+            <div class="col-4">
+                <div class="card">
+                    <form class="row g-3 card-body">
+                        <div class="col-md-6">
+                            <label for="tipo" class="form-label">Tipo de Obra</label>
+                            <select class="form-select" id="tipo">
+                                <option selected value="*">Todos</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="estado" class="form-label">Estado</label>
+                            <select class="form-select" id="estado">
+                                <option selected value="*">Todos</option>
+                            </select>
+                        </div>
+                        <div class="col-md-12">
+                            <label for="provincia" class="form-label">Provincia</label>
+                            <select class="form-select" id="provincia">
+                                <option selected value="*">Todas</option>
+                            </select>
+                        </div>
+                    </form>
+                </div>
+                <div class="card mt-2">
+                    <div class="card-body" id="detalle">
+                        
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="modalPreview">
+            <img id="modalImg" src="#" />
+        </div>
+    </div>
+   
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/owl.carousel.min.js"></script>
+    <script src="js/index.js"></script>
+</body>
+
+</html>

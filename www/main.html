@@ -1,6 +1,6 @@
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Gauto Ingenieria</title>
@@ -9,7 +9,8 @@
 	<meta name="apple-mobile-web-app-capable" content="yes">
 	<meta name="apple-touch-fullscreen" content="yes">
 	<meta name="HandheldFriendly" content="True">
-	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
+	<meta http-equiv="Content-Security-Policy"
+		content="default-src *; style-src 'self' 'unsafe-inline'; script-src 'self' 'unsafe-inline' 'unsafe-eval'">
 
 	<link rel="stylesheet" href="css/materialize.css">
 	<link rel="stylesheet" href="fonts/css/all.min.css">
@@ -17,32 +18,20 @@
 	<link rel="stylesheet" href="css/fakeLoader.css">
 	<link rel="stylesheet" href="css/animate.css">
 	<link rel="stylesheet" href="css/style.css">
-	
 </head>
+
 <body>
-
-	<!-- loader -->
 	<div id="fakeLoader"></div>
-	<!-- end loader -->
 
-	
-	<!-- scripts -->
 	<script src="js/actions/url_server.js"></script>
-    <script src="cordova.js"></script>
+	<script src="cordova.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/actions/loader2.js"></script>
-	<script >
-        // body
-	$("body").addClass('all-loaded'); 
-         $("#fakeLoader").fakeLoader({
-      
-      zIndex: 999,
-      spinner: 'spinner6'
-
-    });
-    </script>
+	<script>
+		$("body").addClass('all-loaded');
+		$("#fakeLoader").fakeLoader({ zIndex: 999, spinner: 'spinner6' });
+	</script>
 	<script src="js/actions/main.js"></script>
-
-
 </body>
+
 </html>

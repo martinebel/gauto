@@ -1,14 +1,14 @@
-
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
 	<meta charset="UTF-8">
 	<title>Gauto Ingenieria</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1  maximum-scale=1">
 	<meta name="mobile-web-app-capable" content="yes">
-	<meta http-equiv="Content-Security-Policy" content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * 'self' 'unsafe-inline' data: file:">
+	<meta http-equiv="Content-Security-Policy"
+		content="default-src *; style-src * 'unsafe-inline'; script-src * 'unsafe-inline' 'unsafe-eval'; img-src * 'self' 'unsafe-inline' data: file:">
 
-    
 	<link rel="stylesheet" href="css/materialize.css">
 	<link rel="stylesheet" href="css/bootstrap.min.css">
 	<link rel="stylesheet" href="fonts/css/all.min.css">
@@ -16,70 +16,52 @@
 	<link rel="stylesheet" href="css/fakeLoader.css">
 	<link rel="stylesheet" href="css/animate.css">
 	<link rel="stylesheet" href="css/style.css">
-	
-
 </head>
-<body>
 
-	<!-- loader -->
+<body>
 	<div id="fakeLoader"></div>
-	<!-- end loader -->
-    <a href="addObra.html" class="btnfloat">
-        <i class="fa fa-plus my-float"></i>
-        </a>
-	<!-- navbar top -->
+	<a href="addObra.html" class="btnfloat">
+		<i class="fa fa-plus my-float"></i>
+	</a>
 	<div class="navbar-top sticky-top">
-        <div class="side-nav-panel-left">
+		<div class="side-nav-panel-left">
 			<a href="#" data-activates="slide-out-left" class="side-nav-right"><i class="fa fa-bars"></i></a>
 		</div>
-		<!-- site brand	 -->
 		<div class="site-brand">
 			<img class="imgHeader" src="img/logo.png" />
 		</div>
-		<!-- end site brand	 -->
 		<div class="side-nav-panel-right">
-			
+
 		</div>
 	</div>
-	<!-- end navbar top -->
 
-	<!-- side nav right-->
 	<div class="side-nav-panel-left">
 		<ul id="slide-out-left" class="side-nav side-nav-panel collapsible">
-			<!--<li class="profil">
-				<img src="img/profile.jpg" alt="">
-				<h2>John Doe</h2>
-			</li>-->
 			<li><a href="main.html"><i class="fa fa-refresh"></i>Actualizar Datos</a></li>
 			<li><a href="addObra.html"><i class="fa fa-plus"></i>Nueva Obra</a></li>
 		</ul>
 	</div>
-	<!-- end side nav right-->   
 
-	<!-- features -->
 	<div class="section features">
 		<div class="container">
-			<div class="alert alert-warning alert-dismissible fade show" id="bannerWarnig" role="alert" style="display: none;">
-  				<span id="bannerWarnigMensaje"></span>
-  				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+			<div class="alert alert-warning alert-dismissible fade show" id="bannerWarnig" role="alert"
+				style="display: none;">
+				<span id="bannerWarnigMensaje"></span>
+				<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
 			</div>
-            <h5 class="text-center mb-2">Ultimas Obras</h5>
+			<h5 class="text-center mb-2">Ultimas Obras</h5>
 			<div class="row listaTrabajos">
 			</div>
 		</div>
 	</div>
-	<!-- end features -->
-	
-	<!-- scripts -->
-    <script src="cordova.js"></script>
+
+	<script src="cordova.js"></script>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/materialize.min.js"></script>
 	<script src="js/fakeLoader.min.js"></script>
 	<script src="js/animatedModal.min.js"></script>
 	<script src="js/main.js"></script>
-    <script src="js/actions/index.js"></script>
-
-
-
+	<script src="js/actions/index.js"></script>
 </body>
+
 </html>
