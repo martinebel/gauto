@@ -64,9 +64,9 @@ $(document).on('change', '#provincia', function () {
 $(document).on('click', '#agregarFoto', function () {
   navigator.camera.getPicture(cameraSuccess, cameraError, {
     quality: 25, //calidad en que se devuelve la imagen
-    destinationType: Camera.DestinationType.DATA_URL, //se devuelve la imagen en base64
+    destinationType: Camera.DestinationType.FILE_URI, //se devuelve la ruta de la imagen
     encodingType: Camera.EncodingType.JPEG, //se codifica como JPEG
-    mediaType: Camera.MediaType.PICTURE, //se debe utilizar la camara (no la galeria)
+    mediaType: Camera.MediaType.PICTURE, //se aceptan imagenes
   });
 });
 
@@ -75,7 +75,8 @@ $(document).on('click', '#agregarFoto', function () {
 ******************************************************************/
 function cameraSuccess(imageData) {
   //agregar la foto a la lista de fotos
-  $("#listafotos").append('<div class="col-6 g-2"><img src="data:image/jpeg;base64,' + imageData + '" class="img-fluid rounded bd-placeholder-img rounded mx-auto d-block previewFoto" /></div>');
+  $("#listafotos").append('<div class="col-6 g-2"><img src="' + imageData + '" data-path="' + imageData + '" class="img-fluid rounded bd-placeholder-img rounded mx-auto d-block previewFoto" /></div>');
+
 }
 
 /***************************************************************** 
@@ -89,6 +90,8 @@ function cameraError(message) {
  * Evento para manejar el click en el boton "guardar"
 ******************************************************************/
 $(document).on('click', '#guardar', function () {
+  var cantFotos = $(".previewFoto").length;
+  var contador = 0;
   //crear un id para la obra
   var uniqueId = Date.now();
   //crear el id inicial para las imagenes
@@ -96,16 +99,37 @@ $(document).on('click', '#guardar', function () {
   //obtener la fecha de hoy
   var fechaHoy = getFormattedDate(new Date());
   //insertar los datos de la obra
-  db.executeSql("INSERT OR IGNORE INTO trabajos(id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,subido) VALUES (?,?,?,?,?,?,?,?,?,?)", [uniqueId, fechaHoy, lat, lon, $("#localidad").val(), $("#tipo").val(), $("#cliente").val(), $("#telefono").val(), '1', '0']);
-  //recorrer el listado de imagenes 
-  $(".previewFoto").each(function () {
-    //incrementar el id de imagen
-    uniqueIdImagen++;
-    //insertar datos de la imagen
-    db.executeSql("INSERT OR IGNORE INTO imagenes (idtrabajo,idimagen,imagen) VALUES (?,?,?)", [uniqueId, uniqueIdImagen, $(this).attr("src")]);
-  });
-  //al finalizar, ir a la pagina principal
-  window.location.href = "index.html";
+  db.executeSql("INSERT OR IGNORE INTO trabajos(id,fechacreacion,latitud,longitud,localidad,tipo,cliente,telefono,estado,subido) VALUES (?,?,?,?,?,?,?,?,?,?)", [uniqueId, fechaHoy, lat, lon, $("#localidad").val(), $("#tipo").val(), $("#cliente").val(), $("#telefono").val(), '1', '0'],
+    function (rs) {
+      //recorrer el listado de imagenes 
+      if (cantFotos > 0) {
+        $(".previewFoto").each(function () {
+          //incrementar el id de imagen
+          uniqueIdImagen++;
+          //insertar datos de la imagen
+          db.executeSql("INSERT OR IGNORE INTO imagenes (idtrabajo,idimagen,imagen) VALUES (?,?,?)", [uniqueId, uniqueIdImagen, $(this).data("path")],
+            function (ts) {
+              contador++;
+              if (contador == cantFotos) {
+                //al finalizar, ir a la pagina principal
+                window.location.href = "index.html";
+              }
+            }, function (error) {
+              alert(error.message);
+            });
+        });
+      }
+      else
+      {
+        window.location.href = "index.html";
+      }
+    },
+    function (error) {
+      alert(error.message);
+    }
+  );
+
+
 });
 
 /******************************************************************************

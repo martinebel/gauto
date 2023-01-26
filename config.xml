@@ -11,6 +11,7 @@
     <allow-navigation href="*" />
     <allow-intent href="*" />
     <platform name="android">
+    <preference name="AndroidInsecureFileModeEnabled" value="true" />
         <allow-intent href="market:*" />
          <access origin="*" />
     <allow-navigation href="*" />

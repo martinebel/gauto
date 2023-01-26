@@ -25,7 +25,9 @@
       },
       "cordova-plugin-camera": {
         "ANDROIDX_CORE_VERSION": "1.6.+"
-      }
+      },
+      "cordova-plugin-filepath": {},
+      "cordova-plugin-file": {}
     }
   },
   "dependencies": {
@@ -37,6 +39,7 @@
     "cordova-plugin-advanced-http": "^3.3.1",
     "cordova-plugin-camera": "^6.0.0",
     "cordova-plugin-file": "^7.0.0",
+    "cordova-plugin-filepath": "^1.6.0",
     "cordova-plugin-network-information": "^3.0.0"
   }
 }

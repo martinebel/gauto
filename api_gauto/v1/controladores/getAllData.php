@@ -12,12 +12,12 @@ class getAllData
   const ESTADO_FALLA_DESCONOCIDA = 7;
   const ESTADO_PARAMETROS_INCORRECTOS = 8;
 
-  public static function get($peticion)
+  public static function get()
   {
-    return self::obtenerTodo($peticion[0]);
+    return self::obtenerTodo();
   }
 
-  private function obtenerTodo($clientID)
+  private function obtenerTodo()
   {
     $estados = array();
     $tipos = array();
@@ -47,7 +47,7 @@ class getAllData
     $sentencia->execute();
     $tipos = $sentencia->fetchAll(PDO::FETCH_ASSOC);
 
-    $comando = "SELECT * from trabajos where id>?";
+   /* $comando = "SELECT * from trabajos where id>?";
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->bindParam(1, $clientID, PDO::PARAM_INT);
     $sentencia->execute();
@@ -57,15 +57,13 @@ class getAllData
     $sentencia = ConexionBD::obtenerInstancia()->obtenerBD()->prepare($comando);
     $sentencia->bindParam(1, $clientID, PDO::PARAM_INT);
     $sentencia->execute();
-    $imagenes = $sentencia->fetchAll(PDO::FETCH_ASSOC);
+    $imagenes = $sentencia->fetchAll(PDO::FETCH_ASSOC);*/
 
     array_push($final, array(
       "estados" => $estados,
       "tipos" => $tipos,
       "provincias" => $provincias,
-      "localidades" => $localidades,
-      "trabajos" => $trabajos,
-      "imagenes" => $imagenes
+      "localidades" => $localidades
     )
     );
     http_response_code(200);
